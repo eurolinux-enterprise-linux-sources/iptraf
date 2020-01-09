@@ -1,7 +1,7 @@
 Summary: A console-based network monitoring utility
 Name: iptraf
 Version: 3.0.1
-Release: 13%{?dist}
+Release: 14%{?dist}
 Source0: http://www.penguin.cz/~fojtik/iptraf/%{name}-%{version}.tar.gz
 Source1: iptraf 
 URL: http://www.penguin.cz/~fojtik/iptraf/
@@ -21,6 +21,7 @@ Patch13: iptraf-3.0.1-ipv6-fix.patch
 Patch14: iptraf-3.0.1-servmon-fix.patch
 Patch15: 0001-fix-strcpy-overlap-memory.patch
 Patch16: iptraf-3.0.1-strict-aliasing.patch
+Patch17: 0001-rhbz-82350-assumes-network-devices-are-named-certain.patch
 License: GPLv2+
 Group: Applications/System
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
@@ -62,6 +63,7 @@ on a wide variety of supported network cards.
 %patch9 -p1 -b .incltypes
 %patch10 -p0 -b .ifname
 %patch11 -p1 -b .interface
+%patch17 -p1
 
 %build
 make -C src CFLAGS="$RPM_OPT_FLAGS -fno-strict-aliasing" \
@@ -105,6 +107,10 @@ rm -rf $RPM_BUILD_ROOT
 %dir %attr(644,root,root) %config(noreplace) /etc/logrotate.d/iptraf
 
 %changelog
+* Thu Jan 19 2011 Nikola Pajkovsky <npajkovs@redhat.com> - 3.0.1-14
+- assumes network devices are named certain things
+- Resolves: #682350
+
 * Thu May 27 2010 Nikola Pajkovsky <npajkovs@redhat.com> - 3.0.1-13
 - add patch iptraf-3.0.1-strict-aliasing.patch
 - Resolves: #596173 - RPMdiff run failed for package iptraf-3.0.1-11.el6
